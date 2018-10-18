@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Popular Movies</string>
+    <string name="app_name">PopMoviesDraft</string>
+
     <string name="action_refresh">Refresh</string>
     <string name="error_message">An error has occurred. Please try again by clicking REFRESH</string>
+    <string name="default_movie_title">Movie Title</string>
 </resources>
