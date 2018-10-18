@@ -25,19 +25,19 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRecyclerView = findViewById(R.id.recyclerview_movies);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_movies);
 
-        mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
+        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, GridLayoutManager.VERTICAL);
 
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
-        mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
+        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
         mRecyclerView.setHasFixedSize(true);
 
-        mMovieAdapter = new MovieAdapter(this);
+       // mMovieAdapter = new MovieAdapter(this);
 
         mRecyclerView.setAdapter(mMovieAdapter);
 
