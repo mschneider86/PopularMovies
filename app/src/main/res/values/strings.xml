@@ -1,7 +1,12 @@
 <resources>
-    <string name="app_name">PopMoviesDraft</string>
+    <string name="app_name">Popular Movies</string>
 
     <string name="action_refresh">Refresh</string>
-    <string name="error_message">An error has occurred. Please try again by clicking REFRESH</string>
+    <string name="action_sort_movies">Sort movies by</string>
+    <string name="action_sort_by_most_populat">Most popular</string>
+    <string name="action_sort_by_top_rated">Top rated</string>
+
+    <string name="error_message_default">An error has occurred. Please try again!</string>
+    <string name="error_message_network">There is no network available. Please check your network signal and try again!</string>
     <string name="default_movie_title">Movie Title</string>
 </resources>
