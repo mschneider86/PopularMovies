@@ -20,14 +20,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     private Context mContext;
     private final MovieAdapterOnClickHandler mClickHandler;
 
+    /**
+     * The interface that receives onClick messages.
+     */
     public interface MovieAdapterOnClickHandler{
-        void onClick(String movieClicked);
+        void onClick(Movie selectedMovie);
     }
 
-    public MovieAdapter(Context context, List<Movie> movieList, MovieAdapterOnClickHandler clickHandler) {
+    public MovieAdapter(Context context, MovieAdapterOnClickHandler clickHandler) {
 
         mContext = context;
-        mMovieList = movieList;
         mClickHandler = clickHandler;
 
     }
@@ -48,7 +50,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public int getItemCount() {
+        if (null == mMovieList) return 0;
         return mMovieList.size();
+    }
+
+    public void setMoviesData(List<Movie> movieList) {
+        mMovieList = movieList;
+        notifyDataSetChanged();
     }
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -65,7 +73,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
         @Override
         public void onClick(View v) {
-
+            int adapterPosition = getAdapterPosition();
+            Movie mSelectedMovie= mMovieList.get(adapterPosition);
+            mClickHandler.onClick(mSelectedMovie);
         }
     }
 }
