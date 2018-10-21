@@ -19,8 +19,9 @@ public class NetworkUtils {
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org";
 
     private static final String API_KEY_QUERY_PARAM = "api_key";
-    //TODO remove api key before commit
+
     private static final String MOVIE_DB_API_KEY = "INSERT_YOUR_API_KEY_HERE";
+
 
 
     private static final String T_PATH = "t";

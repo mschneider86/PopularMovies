@@ -10,6 +10,8 @@
     <string name="error_message_network">There is no network available. Please check your network signal and try again!</string>
 
     <string name="default_movie_title">Movie Title</string>
+    <string name="movie_poster_description">Poster of the movie</string>
+    <string name="vote_average_description">Vote Average</string>
     <string name="release_date">Release Date: \u0020</string>
     <string name="plot">Plot:</string>
 </resources>
