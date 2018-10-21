@@ -1,8 +1,8 @@
 package br.com.schneiderapps.android.popularmovies;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Parcelable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
 
         //Poster width in px, same as the size informed in the query (w342), just a random value
-        int posterWidth = 342;
+        int posterWidth = (int) getResources().getDimension(R.dimen.movie_poster_width);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, calculateBestSpanCount(posterWidth));
 
         mRecyclerView.setLayoutManager(gridLayoutManager);
@@ -60,9 +60,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mMovieList = new ArrayList<>();
 
+        //If there's no savedInstance, calls the loadMoviesData method
         if(savedInstanceState == null || !savedInstanceState.containsKey("movies")){
             loadMoviesData(NetworkUtils.POPULAR_MOVIES_PATH);
         }else{
+            //If there is a savedInstance, set the saved list into the adapter
             mMovieList = savedInstanceState.getParcelableArrayList("movies");
             mMovieAdapter.setMoviesData(mMovieList);
         }
@@ -71,9 +73,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private void loadMoviesData(String sortCriteria){
 
+        //Check if the user has internet access
         if(NetworkUtils.isOnline(this)) {
             showMoviesDataView();
 
+            //calls the async task to load the movies passing the criteria for the search
             new FetchPopularMoviesTask().execute(sortCriteria);
 
         }else
@@ -144,6 +148,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     public void onClick(Movie selectedMovie) {
 
+        Intent intent = new Intent(this, MovieDetailsActivity.class);
+        intent.putExtra("selectedMovie", selectedMovie);
+        startActivity(intent);
     }
 
     private class FetchPopularMoviesTask extends AsyncTask<String, Void, List<Movie>> {
