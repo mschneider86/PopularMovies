@@ -8,5 +8,8 @@
 
     <string name="error_message_default">An error has occurred. Please try again!</string>
     <string name="error_message_network">There is no network available. Please check your network signal and try again!</string>
+
     <string name="default_movie_title">Movie Title</string>
+    <string name="release_date">Release Date: \u0020</string>
+    <string name="plot">Plot:</string>
 </resources>
