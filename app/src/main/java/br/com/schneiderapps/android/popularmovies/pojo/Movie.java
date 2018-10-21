@@ -94,7 +94,7 @@ public class Movie implements Parcelable {
         this.voteAverage = in.readDouble();
     }
 
-    public final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>(){
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>(){
 
         @Override
         public Movie createFromParcel(Parcel parcel) {
