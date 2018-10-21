@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="cardview_default_margin">5dp</dimen>
+    <dimen name="cardview_corner_radius">5dp</dimen>
+
+    <dimen name="movie_details_default_margin">10dp</dimen>
+    <dimen name="movie_title_text_size">18sp</dimen>
+
+    <dimen name="movie_poster_width">342px</dimen>
+</resources>
