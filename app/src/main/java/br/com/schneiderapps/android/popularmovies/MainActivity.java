@@ -1,7 +1,6 @@
 package br.com.schneiderapps.android.popularmovies;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,15 +15,15 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.schneiderapps.android.popularmovies.network.AsyncTaskDelegate;
+import br.com.schneiderapps.android.popularmovies.network.MovieAsyncTaskExecutor;
 import br.com.schneiderapps.android.popularmovies.pojo.Movie;
-import br.com.schneiderapps.android.popularmovies.utilities.JsonUtils;
 import br.com.schneiderapps.android.popularmovies.utilities.NetworkUtils;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler{
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, AsyncTaskDelegate {
 
     private RecyclerView mRecyclerView;
     private MovieAdapter mMovieAdapter;
@@ -33,16 +32,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private ProgressBar mLoadingIndicator;
 
-    List<Movie> mMovieList;
+    private List<Movie> mMovieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_movies);
+        mRecyclerView = findViewById(R.id.recyclerview_movies);
 
-        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
+        mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
 
         //Poster width in px, same as the size informed in the query (w342), just a random value
         int posterWidth = (int) getResources().getDimension(R.dimen.movie_poster_width);
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+        mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
 
         mRecyclerView.setHasFixedSize(true);
 
@@ -77,8 +76,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if(NetworkUtils.isOnline(this)) {
             showMoviesDataView();
 
-            //calls the async task to load the movies passing the criteria for the search
-            new FetchPopularMoviesTask().execute(sortCriteria);
+            //calls the async task executor to load the movies passing the criteria for the search
+            new MovieAsyncTaskExecutor(this).execute(sortCriteria);
 
         }else
             showErrorMessage(getResources().getString(R.string.error_message_network));
@@ -153,49 +152,22 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         startActivity(intent);
     }
 
-    private class FetchPopularMoviesTask extends AsyncTask<String, Void, List<Movie>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected List<Movie> doInBackground(String... params) {
-
-            if (params.length == 0) {
-                return null;
-            }
-
-            String sortCriteria = params[0];
-            URL movieRequestUrl = NetworkUtils.buildUrl(sortCriteria);
-
-            try {
-                String jsonBuiltURLResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
-
-                return JsonUtils.getMovieListFromJson(jsonBuiltURLResponse);
-            } catch (Exception e) {
-                e.printStackTrace();
-
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<Movie> movieList) {
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (movieList != null) {
-                showMoviesDataView();
-
-                mMovieList = movieList;
-
-                mMovieAdapter.setMoviesData(mMovieList);
-            } else {
-                showErrorMessage(getResources().getString(R.string.error_message_default));
-            }
-
-        }
-
+    @Override
+    public void processStart() {
+        mLoadingIndicator.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void processResult(Object output) {
+        if (output != null) {
+            showMoviesDataView();
+
+            mMovieList = (List<Movie>)output;
+
+            mMovieAdapter.setMoviesData(mMovieList);
+        } else {
+            showErrorMessage(getResources().getString(R.string.error_message_default));
+        }
+    }
+
 }
