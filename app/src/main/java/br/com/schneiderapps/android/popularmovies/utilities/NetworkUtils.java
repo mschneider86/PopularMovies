@@ -12,6 +12,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
+import br.com.schneiderapps.android.popularmovies.BuildConfig;
+
 
 public class NetworkUtils {
 
@@ -20,7 +22,8 @@ public class NetworkUtils {
 
     private static final String API_KEY_QUERY_PARAM = "api_key";
 
-    private static final String MOVIE_DB_API_KEY = "INSERT_YOUR_API_KEY_HERE";
+    //Insert your ApiKey on gradle.properties
+    private static final String MOVIE_DB_API_KEY = BuildConfig.ApiKey;
 
 
 
@@ -51,14 +54,13 @@ public class NetworkUtils {
     }
 
     public static Uri buildImageUri(String moviePosterUrl) {
-        Uri builtUri = Uri.parse(IMAGE_BASE_URL).buildUpon()
+
+        return Uri.parse(IMAGE_BASE_URL).buildUpon()
                 .appendPath(T_PATH)
                 .appendPath(P_PATH)
                 .appendPath(IMAGE_SIZE_PATH)
                 .appendEncodedPath(moviePosterUrl)
                 .build();
-
-        return builtUri;
     }
 
     /**
