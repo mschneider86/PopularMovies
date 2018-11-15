@@ -159,6 +159,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     public void processResult(Object output) {
+
+        mLoadingIndicator.setVisibility(View.GONE);
+
         if (output != null) {
             showMoviesDataView();
 

@@ -42,9 +42,7 @@ public final class JsonUtils {
             voteAverage = movieJsonObject.optInt(VOTE_AVERAGE);
             releaseDate = movieJsonObject.optString(RELEASE_DATE);
 
-            Movie movie = new Movie(id, originalTitle, moviePoster, overview, voteAverage, releaseDate);
-
-            movieList.add(movie);
+            movieList.add(new Movie(id, originalTitle, moviePoster, overview, voteAverage, releaseDate));
         }
 
         return movieList;
