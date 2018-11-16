@@ -1,18 +1,34 @@
-package br.com.schneiderapps.android.popularmovies.pojo;
+package br.com.schneiderapps.android.popularmovies.db.entities;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
-public class Movie implements Parcelable {
+@Entity(tableName = "tb_favorite_movies")
+public class MovieEntity implements Parcelable {
 
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
     private int id;
+
+    @ColumnInfo(name = "original_title")
     private String originalTitle;
+
     private String overview;
+
+    @ColumnInfo(name = "poster_path")
     private String posterPath;
+
+    @ColumnInfo(name = "release_date")
     private String releaseDate;
+
+    @ColumnInfo(name = "vote_average")
     private double voteAverage;
 
-    public Movie(int id, String originalTitle, String posterPath, String overview, int voteAverage, String releaseDate) {
+    public MovieEntity(int id, String originalTitle, String posterPath, String overview, int voteAverage, String releaseDate) {
         this.id = id;
         this.originalTitle = originalTitle;
         this.posterPath = posterPath;
@@ -85,7 +101,7 @@ public class Movie implements Parcelable {
         dest.writeDouble(this.voteAverage);
     }
 
-    private Movie(Parcel in){
+    private MovieEntity(Parcel in){
         this.id = in.readInt();
         this.originalTitle = in.readString();
         this.overview = in.readString();
@@ -94,16 +110,16 @@ public class Movie implements Parcelable {
         this.voteAverage = in.readDouble();
     }
 
-    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>(){
+    public static final Parcelable.Creator<MovieEntity> CREATOR = new Parcelable.Creator<MovieEntity>(){
 
         @Override
-        public Movie createFromParcel(Parcel parcel) {
-            return new Movie(parcel);
+        public MovieEntity createFromParcel(Parcel parcel) {
+            return new MovieEntity(parcel);
         }
 
         @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
+        public MovieEntity[] newArray(int size) {
+            return new MovieEntity[size];
         }
     };
 }

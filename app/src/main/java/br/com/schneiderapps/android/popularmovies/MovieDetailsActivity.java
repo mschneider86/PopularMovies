@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import br.com.schneiderapps.android.popularmovies.pojo.Movie;
+import br.com.schneiderapps.android.popularmovies.db.entities.MovieEntity;
 import br.com.schneiderapps.android.popularmovies.utilities.NetworkUtils;
 
 public class MovieDetailsActivity extends AppCompatActivity {
@@ -35,7 +35,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         //Check if the desired extra exists
         if(intent.hasExtra("selectedMovie")){
-            Movie selectedMovie = getIntent().getExtras().getParcelable("selectedMovie");
+            MovieEntity selectedMovie = getIntent().getExtras().getParcelable("selectedMovie");
 
             Uri posterUrl = NetworkUtils.buildImageUri(selectedMovie.getPosterPath());
 

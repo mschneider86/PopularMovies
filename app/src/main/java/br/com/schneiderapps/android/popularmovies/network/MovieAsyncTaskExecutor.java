@@ -7,11 +7,11 @@ import android.os.AsyncTask;
 import java.net.URL;
 import java.util.List;
 
-import br.com.schneiderapps.android.popularmovies.pojo.Movie;
+import br.com.schneiderapps.android.popularmovies.db.entities.MovieEntity;
 import br.com.schneiderapps.android.popularmovies.utilities.JsonUtils;
 import br.com.schneiderapps.android.popularmovies.utilities.NetworkUtils;
 
-public class MovieAsyncTaskExecutor extends AsyncTask<String, Void, List<Movie>> {
+public class MovieAsyncTaskExecutor extends AsyncTask<String, Void, List<MovieEntity>> {
 
     private AsyncTaskDelegate delegate;
     private Context context;
@@ -29,7 +29,7 @@ public class MovieAsyncTaskExecutor extends AsyncTask<String, Void, List<Movie>>
     }
 
     @Override
-    protected List<Movie> doInBackground(String... strings) {
+    protected List<MovieEntity> doInBackground(String... strings) {
         if (strings.length == 0) {
             return null;
         }
@@ -49,7 +49,7 @@ public class MovieAsyncTaskExecutor extends AsyncTask<String, Void, List<Movie>>
     }
 
     @Override
-    protected void onPostExecute(List<Movie> movies) {
+    protected void onPostExecute(List<MovieEntity> movies) {
         super.onPostExecute(movies);
         if(delegate != null)
             delegate.processResult(movies);

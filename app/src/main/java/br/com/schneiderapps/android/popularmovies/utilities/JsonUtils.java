@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.schneiderapps.android.popularmovies.pojo.Movie;
+import br.com.schneiderapps.android.popularmovies.db.entities.MovieEntity;
 
 public final class JsonUtils {
 
@@ -20,8 +20,8 @@ public final class JsonUtils {
     private static final String VOTE_AVERAGE = "vote_average";
     private static final String RELEASE_DATE = "release_date";
 
-    public static List<Movie> getMovieListFromJson(String jsonString) throws JSONException {
-        List<Movie> movieList = new ArrayList<>();
+    public static List<MovieEntity> getMovieListFromJson(String jsonString) throws JSONException {
+        List<MovieEntity> movieList = new ArrayList<>();
         JSONObject moviesJson = new JSONObject(jsonString);
         JSONArray moviesArray = moviesJson.getJSONArray(JSON_OBJECT_RESULTS);
 
@@ -42,7 +42,7 @@ public final class JsonUtils {
             voteAverage = movieJsonObject.optInt(VOTE_AVERAGE);
             releaseDate = movieJsonObject.optString(RELEASE_DATE);
 
-            movieList.add(new Movie(id, originalTitle, moviePoster, overview, voteAverage, releaseDate));
+            movieList.add(new MovieEntity(id, originalTitle, moviePoster, overview, voteAverage, releaseDate));
         }
 
         return movieList;

@@ -31,7 +31,7 @@ public class NetworkUtils {
     private static final String P_PATH = "p";
     private static final String IMAGE_SIZE_PATH = "w342";
     public static final String POPULAR_MOVIES_PATH = "popular";
-    public static final String TOP_RATED__MOVIES_PATH = "top_rated";
+    public static final String TOP_RATED_MOVIES_PATH = "top_rated";
 
     public static URL buildUrl(String... apiParams) {
         Uri.Builder uriBuilder = Uri.parse(THE_MOVIE_DB_URL).buildUpon();

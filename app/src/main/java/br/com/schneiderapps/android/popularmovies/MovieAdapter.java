@@ -11,12 +11,12 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
-import br.com.schneiderapps.android.popularmovies.pojo.Movie;
+import br.com.schneiderapps.android.popularmovies.db.entities.MovieEntity;
 import br.com.schneiderapps.android.popularmovies.utilities.NetworkUtils;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder>{
 
-    private List<Movie> mMovieList;
+    private List<MovieEntity> mMovieList;
     private Context mContext;
     private final MovieAdapterOnClickHandler mClickHandler;
 
@@ -24,7 +24,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
      * The interface that receives onClick messages.
      */
     public interface MovieAdapterOnClickHandler{
-        void onClick(Movie selectedMovie);
+        void onClick(MovieEntity selectedMovie);
     }
 
     public MovieAdapter(Context context, MovieAdapterOnClickHandler clickHandler) {
@@ -54,7 +54,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         return mMovieList.size();
     }
 
-    public void setMoviesData(List<Movie> movieList) {
+    public void setMoviesData(List<MovieEntity> movieList) {
         mMovieList = movieList;
         notifyDataSetChanged();
     }
@@ -74,7 +74,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            Movie mSelectedMovie= mMovieList.get(adapterPosition);
+            MovieEntity mSelectedMovie= mMovieList.get(adapterPosition);
             mClickHandler.onClick(mSelectedMovie);
         }
     }

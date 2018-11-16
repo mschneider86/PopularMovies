@@ -20,7 +20,7 @@ import java.util.List;
 
 import br.com.schneiderapps.android.popularmovies.network.AsyncTaskDelegate;
 import br.com.schneiderapps.android.popularmovies.network.MovieAsyncTaskExecutor;
-import br.com.schneiderapps.android.popularmovies.pojo.Movie;
+import br.com.schneiderapps.android.popularmovies.db.entities.MovieEntity;
 import br.com.schneiderapps.android.popularmovies.utilities.NetworkUtils;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, AsyncTaskDelegate {
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private ProgressBar mLoadingIndicator;
 
-    private List<Movie> mMovieList;
+    private List<MovieEntity> mMovieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             if (!item.isChecked())
                 item.setChecked(true);
 
-            loadMoviesData(NetworkUtils.TOP_RATED__MOVIES_PATH);
+            loadMoviesData(NetworkUtils.TOP_RATED_MOVIES_PATH);
             return true;
         }
 
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     @Override
-    public void onClick(Movie selectedMovie) {
+    public void onClick(MovieEntity selectedMovie) {
 
         Intent intent = new Intent(this, MovieDetailsActivity.class);
         intent.putExtra("selectedMovie", selectedMovie);
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (output != null) {
             showMoviesDataView();
 
-            mMovieList = (List<Movie>)output;
+            mMovieList = (List<MovieEntity>)output;
 
             mMovieAdapter.setMoviesData(mMovieList);
         } else {
