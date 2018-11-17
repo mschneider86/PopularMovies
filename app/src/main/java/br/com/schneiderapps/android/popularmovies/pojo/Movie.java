@@ -3,13 +3,33 @@ package br.com.schneiderapps.android.popularmovies.pojo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Movie implements Parcelable {
 
+    @SerializedName("id")
+    @Expose
     private int id;
+
+    @SerializedName("original_title")
+    @Expose
     private String originalTitle;
+
+    @SerializedName("overview")
+    @Expose
     private String overview;
+
+    @SerializedName("poster_path")
+    @Expose
     private String posterPath;
+
+    @SerializedName("release_date")
+    @Expose
     private String releaseDate;
+
+    @SerializedName("vote_average")
+    @Expose
     private double voteAverage;
 
     public Movie(int id, String originalTitle, String posterPath, String overview, int voteAverage, String releaseDate) {

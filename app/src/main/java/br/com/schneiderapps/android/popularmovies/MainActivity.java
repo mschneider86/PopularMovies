@@ -18,12 +18,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.schneiderapps.android.popularmovies.network.AsyncTaskDelegate;
-import br.com.schneiderapps.android.popularmovies.network.MovieAsyncTaskExecutor;
+import br.com.schneiderapps.android.popularmovies.api.ApiClient;
 import br.com.schneiderapps.android.popularmovies.pojo.Movie;
+import br.com.schneiderapps.android.popularmovies.pojo.MovieResults;
 import br.com.schneiderapps.android.popularmovies.utilities.NetworkUtils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, AsyncTaskDelegate {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
     private RecyclerView mRecyclerView;
     private MovieAdapter mMovieAdapter;
@@ -76,8 +79,43 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if(NetworkUtils.isOnline(this)) {
             showMoviesDataView();
 
-            //calls the async task executor to load the movies passing the criteria for the search
-            new MovieAsyncTaskExecutor(this).execute(sortCriteria);
+            mLoadingIndicator.setVisibility(View.VISIBLE);
+
+            Call<MovieResults> call;
+
+            switch(sortCriteria){
+                case NetworkUtils.POPULAR_MOVIES_PATH:
+                    call = ApiClient.getInstance().getPopularMovies();
+                    break;
+                case NetworkUtils.TOP_RATED__MOVIES_PATH:
+                    call = ApiClient.getInstance().getTopRatedMovies();
+                    break;
+
+                default:
+                    call = ApiClient.getInstance().getPopularMovies();
+            }
+
+            call.enqueue(new Callback<MovieResults>() {
+                @Override
+                public void onResponse(Call<MovieResults> call, Response<MovieResults> response) {
+                    if(!response.isSuccessful()){
+                        showErrorMessage("Error: " + response.code());
+                        return;
+                    }
+
+                    showMoviesDataView();
+
+                    mMovieAdapter.setMoviesData(response.body().getResultMovies());
+
+                    mLoadingIndicator.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onFailure(Call<MovieResults> call, Throwable t) {
+                    showErrorMessage("Error: " + t.getMessage());
+                    mLoadingIndicator.setVisibility(View.GONE);
+                }
+            });
 
         }else
             showErrorMessage(getResources().getString(R.string.error_message_network));
@@ -150,27 +188,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         Intent intent = new Intent(this, MovieDetailsActivity.class);
         intent.putExtra("selectedMovie", selectedMovie);
         startActivity(intent);
-    }
-
-    @Override
-    public void processStart() {
-        mLoadingIndicator.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void processResult(Object output) {
-
-        mLoadingIndicator.setVisibility(View.GONE);
-
-        if (output != null) {
-            showMoviesDataView();
-
-            mMovieList = (List<Movie>)output;
-
-            mMovieAdapter.setMoviesData(mMovieList);
-        } else {
-            showErrorMessage(getResources().getString(R.string.error_message_default));
-        }
     }
 
 }
