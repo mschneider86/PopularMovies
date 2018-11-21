@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/CardViewReview">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/text_movie_review_content"
+            tools:src="Review content"
+            style="@style/ReviewContent"/>
+
+        <TextView
+            android:id="@+id/text_movie_review_author"
+            android:layout_below="@id/text_movie_review_content"
+            style="@style/ReviewAuthor"
+            tools:src="Author"/>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

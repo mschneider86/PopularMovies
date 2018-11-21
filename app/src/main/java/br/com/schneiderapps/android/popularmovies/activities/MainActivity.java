@@ -1,4 +1,4 @@
-package br.com.schneiderapps.android.popularmovies;
+package br.com.schneiderapps.android.popularmovies.activities;
 
 import android.content.Intent;
 import android.os.Parcelable;
@@ -12,26 +12,33 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.schneiderapps.android.popularmovies.adapters.MovieAdapter;
+import br.com.schneiderapps.android.popularmovies.R;
 import br.com.schneiderapps.android.popularmovies.api.ApiClient;
 import br.com.schneiderapps.android.popularmovies.pojo.Movie;
 import br.com.schneiderapps.android.popularmovies.pojo.MovieResults;
+import br.com.schneiderapps.android.popularmovies.tasks.AsyncTaskDelegate;
+import br.com.schneiderapps.android.popularmovies.tasks.GetFavoritesListAsyncTaskExecutor;
 import br.com.schneiderapps.android.popularmovies.utilities.NetworkUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, AsyncTaskDelegate {
 
     private RecyclerView mRecyclerView;
     private MovieAdapter mMovieAdapter;
 
     private TextView mErrorMessageDisplay;
+    private TextView mMoviesTryAgain;
+    private LinearLayout mLinearError;
 
     private ProgressBar mLoadingIndicator;
 
@@ -39,12 +46,21 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mRecyclerView = findViewById(R.id.recyclerview_movies);
 
         mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
+        mMoviesTryAgain = findViewById(R.id.tv_movies_try_again);
+        mMoviesTryAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadMoviesData(NetworkUtils.POPULAR_MOVIES_PATH);
+            }
+        });
+        mLinearError = findViewById(R.id.linearError);
 
         //Poster width in px, same as the size informed in the query (w342), just a random value
         int posterWidth = (int) getResources().getDimension(R.dimen.movie_poster_width);
@@ -60,17 +76,21 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mRecyclerView.setAdapter(mMovieAdapter);
 
-        mMovieList = new ArrayList<>();
-
         //If there's no savedInstance, calls the loadMoviesData method
-        if(savedInstanceState == null || !savedInstanceState.containsKey("movies")){
+        if(savedInstanceState == null || !savedInstanceState.containsKey(getResources().getString(R.string.saved_state_key))){
             loadMoviesData(NetworkUtils.POPULAR_MOVIES_PATH);
         }else{
             //If there is a savedInstance, set the saved list into the adapter
-            mMovieList = savedInstanceState.getParcelableArrayList("movies");
+            mMovieList = savedInstanceState.getParcelableArrayList(getResources().getString(R.string.saved_state_key));
             mMovieAdapter.setMoviesData(mMovieList);
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRecyclerView.getAdapter().notifyDataSetChanged();
     }
 
     private void loadMoviesData(String sortCriteria){
@@ -84,13 +104,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             Call<MovieResults> call;
 
             switch(sortCriteria){
-                case NetworkUtils.POPULAR_MOVIES_PATH:
-                    call = ApiClient.getInstance().getPopularMovies();
-                    break;
+
                 case NetworkUtils.TOP_RATED__MOVIES_PATH:
                     call = ApiClient.getInstance().getTopRatedMovies();
                     break;
 
+                case NetworkUtils.POPULAR_MOVIES_PATH:
                 default:
                     call = ApiClient.getInstance().getPopularMovies();
             }
@@ -99,31 +118,34 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 @Override
                 public void onResponse(Call<MovieResults> call, Response<MovieResults> response) {
                     if(!response.isSuccessful()){
-                        showErrorMessage("Error: " + response.code());
+                        showErrorMessage(getResources().getString(R.string.msg_default_error));
                         return;
                     }
 
                     showMoviesDataView();
 
-                    mMovieAdapter.setMoviesData(response.body().getResultMovies());
+                    mMovieList = response.body().getListMovies();
+                    mMovieAdapter.setMoviesData(mMovieList);
 
                     mLoadingIndicator.setVisibility(View.GONE);
                 }
 
                 @Override
                 public void onFailure(Call<MovieResults> call, Throwable t) {
-                    showErrorMessage("Error: " + t.getMessage());
+                    showErrorMessage(getResources().getString(R.string.msg_default_error));
                     mLoadingIndicator.setVisibility(View.GONE);
                 }
             });
 
         }else
-            showErrorMessage(getResources().getString(R.string.error_message_network));
+            showErrorMessage(getResources().getString(R.string.msg_no_network));
     }
 
     private void showMoviesDataView() {
 
+        mLinearError.setVisibility(View.GONE);
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+        mMoviesTryAgain.setVisibility(View.INVISIBLE);
 
         mRecyclerView.setVisibility(View.VISIBLE);
     }
@@ -132,8 +154,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mRecyclerView.setVisibility(View.INVISIBLE);
 
+        mLinearError.setVisibility(View.VISIBLE);
         mErrorMessageDisplay.setText(message);
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
+        mMoviesTryAgain.setVisibility(View.VISIBLE);
     }
 
     private int calculateBestSpanCount(int posterWidth) {
@@ -144,9 +168,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return Math.round(screenWidth / posterWidth);
     }
 
+    private void loadFavoriteMovies(){
+
+        new GetFavoritesListAsyncTaskExecutor(this).execute();
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("movies", (ArrayList<? extends Parcelable>) mMovieList);
+        outState.putParcelableArrayList(getResources().getString(R.string.saved_state_key), (ArrayList<? extends Parcelable>) mMovieList);
         super.onSaveInstanceState(outState);
     }
 
@@ -177,6 +206,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
             loadMoviesData(NetworkUtils.TOP_RATED__MOVIES_PATH);
             return true;
+
+        } else if(id == R.id.action_sort_by_favorite) {
+            if (!item.isChecked())
+                item.setChecked(true);
+
+            loadFavoriteMovies();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -186,8 +222,20 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public void onClick(Movie selectedMovie) {
 
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("selectedMovie", selectedMovie);
+        intent.putExtra(getResources().getString(R.string.selected_movie_extra_key), selectedMovie);
         startActivity(intent);
     }
 
+    @Override
+    public void processStart() {
+        showMoviesDataView();
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void processFinish(Object object) {
+
+        mMovieAdapter.setMoviesData((List<Movie>)object);
+        mLoadingIndicator.setVisibility(View.GONE);
+    }
 }

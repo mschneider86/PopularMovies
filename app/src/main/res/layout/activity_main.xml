@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".activities.MainActivity"
     android:padding="8dp">
 
     <android.support.v7.widget.RecyclerView
@@ -12,18 +12,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <TextView
-        android:id="@+id/tv_error_message_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textSize="20sp"
-        android:visibility="invisible" />
+    <LinearLayout
+        android:id="@+id/linearError"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_error_message_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tv_movies_try_again"
+            android:text="@string/msg_try_again"
+            android:gravity="center"
+            style="@style/TextTryAgain"/>
+    </LinearLayout>
+
 
     <ProgressBar
         android:id="@+id/pb_loading_indicator"
-        android:layout_height="42dp"
-        android:layout_width="42dp"
+        android:layout_height="@dimen/progress_indicator_size"
+        android:layout_width="@dimen/progress_indicator_size"
         android:layout_gravity="center"
         android:visibility="invisible" />
 </FrameLayout>

@@ -10,7 +10,7 @@ public class Movie implements Parcelable {
 
     @SerializedName("id")
     @Expose
-    private int id;
+    private int movieId;
 
     @SerializedName("original_title")
     @Expose
@@ -32,8 +32,9 @@ public class Movie implements Parcelable {
     @Expose
     private double voteAverage;
 
-    public Movie(int id, String originalTitle, String posterPath, String overview, int voteAverage, String releaseDate) {
-        this.id = id;
+
+    public Movie(int movieId, String originalTitle, String posterPath, String overview, double voteAverage, String releaseDate) {
+        this.movieId = movieId;
         this.originalTitle = originalTitle;
         this.posterPath = posterPath;
         this.overview = overview;
@@ -42,12 +43,12 @@ public class Movie implements Parcelable {
     }
 
 
-    public int getId() {
-        return id;
+    public int getMovieId() {
+        return movieId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
     public String getOriginalTitle() {
@@ -90,6 +91,7 @@ public class Movie implements Parcelable {
         this.voteAverage = voteAverage;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -97,7 +99,7 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.id);
+        dest.writeInt(this.movieId);
         dest.writeString(this.originalTitle);
         dest.writeString(this.overview);
         dest.writeString(this.posterPath);
@@ -106,7 +108,7 @@ public class Movie implements Parcelable {
     }
 
     private Movie(Parcel in){
-        this.id = in.readInt();
+        this.movieId = in.readInt();
         this.originalTitle = in.readString();
         this.overview = in.readString();
         this.posterPath = in.readString();

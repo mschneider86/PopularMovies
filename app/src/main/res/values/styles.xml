@@ -1,5 +1,4 @@
-<resources>
-
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -8,4 +7,119 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="colorPrimaryDark">@color/colorWhite</item>
+    </style>
+
+    <style name="MovieTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textSize">@dimen/movie_title_text_size</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="SectionTitle" >
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Medium</item>
+    </style>
+
+    <style name="TextTryAgain">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:drawableLeft">@drawable/ic_autorenew_black_24dp</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="CardViewBase" parent="CardView">
+        <item name="android:layout_margin">@dimen/cardview_default_margin</item>
+        <item name="cardCornerRadius">@dimen/cardview_corner_radius</item>
+        <item name="cardElevation">@dimen/cardview_elevation</item>
+        <item name="cardMaxElevation">@dimen/cardview_max_elevation</item>
+    </style>
+
+    <!--============================= movie item ==============================-->
+    <style name="CardViewMoviePoster" parent="CardViewBase">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="MoviePoster">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:contentDescription">@string/movie_poster_description</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:background">@color/colorPrimaryLight</item>
+    </style>
+
+    <!--============================= trailer item ==============================-->
+    <style name="CardViewTrailer" parent="CardViewBase">
+        <item name="android:layout_width">@dimen/trailer_width</item>
+        <item name="android:layout_height">145dp</item>
+        <item name="android:padding">@dimen/spacing_medium</item>
+    </style>
+
+    <style name="TrailerThumbnail">
+        <item name="android:layout_width">@dimen/trailer_width</item>
+        <item name="android:layout_height">115dp</item>
+        <item name="android:padding">@dimen/spacing_small</item>
+        <item name="android:paddingLeft">@dimen/spacing_medium</item>
+        <item name="android:paddingRight">@dimen/spacing_medium</item>
+        <item name="android:contentDescription">@string/content_description_movie_trailer</item>
+
+    </style>
+
+    <style name="PlayImageView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:contentDescription">@string/content_description_play_movie_trailer</item>
+        <item name="android:src">@drawable/ic_play_circle_filled_black</item>
+    </style>
+
+    <style name="TrailerTitle">
+        <item name="android:layout_width">@dimen/trailer_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/spacing_small</item>
+        <item name="android:paddingLeft">@dimen/spacing_medium</item>
+        <item name="android:paddingRight">@dimen/spacing_medium</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!--=================================================================-->
+    <!--============================= review item ==============================-->
+    <style name="CardViewReview" parent="CardViewBase">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/spacing_medium</item>
+
+    </style>
+
+    <style name="ReviewContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="ReviewAuthor">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:gravity">end</item>
+        <item name="android:paddingTop">@dimen/spacing_small</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!--=================================================================-->
 </resources>

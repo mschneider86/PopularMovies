@@ -5,13 +5,45 @@
     <string name="action_sort_movies">Sort movies by</string>
     <string name="action_sort_by_most_populat">Most popular</string>
     <string name="action_sort_by_top_rated">Top rated</string>
+    <string name="action_sort_by_favorite">Favorites</string>
 
-    <string name="error_message_default">An error has occurred. Please try again!</string>
-    <string name="error_message_network">There is no network available. Please check your network signal and try again!</string>
+    <string name="action_favorite_movie">Mark as Favorite</string>
+    <string name="action_share_movie">Share Movie</string>
+
+    <string name="msg_default_error">An error has occurred!</string>
+    <string name="msg_no_network">There is no network available. Please check your network signal!</string>
+    <string name="msg_no_network_short">There is no network available!</string>
 
     <string name="default_movie_title">Movie Title</string>
     <string name="movie_poster_description">Poster of the movie</string>
     <string name="vote_average_description">Vote Average</string>
     <string name="release_date">Release Date: \u0020</string>
     <string name="plot">Plot:</string>
+
+    <string name="movie_videos_title">Videos:</string>
+    <string name="movie_reviews_title">Reviews:</string>
+
+
+    <string name="saved_state_key">movies</string>
+    <string name="selected_movie_extra_key">selectedMovie</string>
+
+
+    <string name="msg_saved_favorite">Movie saved as Favorite!</string>
+    <string name="msg_error_save_favorite">Error saving movie as favorite. Please try again!</string>
+    <string name="msg_removed_favorite">Movie removed from Favorites!</string>
+    <string name="msg_error_remove_favorite">Error removing movie from favorites. Please try again!</string>
+
+    <string name="msg_error_insert_row">Failed to insert row into \u0020</string>
+    <string name="msg_unknown_uri">Unknown uri: \u0020</string>
+
+    <string name="msg_try_again">Try again</string>
+
+    <string name="error">Error: \u0020</string>
+
+    <!-- Content description -->
+    <string name="content_description_movie_poster">Movie poster image</string>
+    <string name="content_description_movie_trailer">Movie trailer image</string>
+    <string name="content_description_play_movie_trailer">Play the Movie trailer</string>
+
+
 </resources>

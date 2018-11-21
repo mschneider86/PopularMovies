@@ -1,4 +1,4 @@
-package br.com.schneiderapps.android.popularmovies;
+package br.com.schneiderapps.android.popularmovies.adapters;
 
 import android.content.Context;
 import android.net.Uri;
@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
+import br.com.schneiderapps.android.popularmovies.R;
 import br.com.schneiderapps.android.popularmovies.pojo.Movie;
 import br.com.schneiderapps.android.popularmovies.utilities.NetworkUtils;
 
@@ -45,7 +46,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     @Override
     public void onBindViewHolder(@NonNull MovieAdapterViewHolder movieAdapterViewHolder, int position) {
         Uri moviePosterUri = NetworkUtils.buildImageUri(mMovieList.get(position).getPosterPath());
-        Picasso.with(mContext).load(moviePosterUri).into(movieAdapterViewHolder.mImageView);
+
+        Picasso.with(mContext)
+                .load(moviePosterUri)
+                .into(movieAdapterViewHolder.mImageView);
     }
 
     @Override

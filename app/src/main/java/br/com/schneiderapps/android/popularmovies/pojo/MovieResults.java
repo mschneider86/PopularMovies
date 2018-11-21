@@ -9,13 +9,13 @@ public class MovieResults {
 
     @SerializedName("results")
     @Expose
-    private List<Movie> resultMovies;
+    private List<Movie> listMovies;
 
-    public List<Movie> getResultMovies() {
-        return resultMovies;
+    public List<Movie> getListMovies() {
+        return listMovies;
     }
 
-    public void setResultMovies(List<Movie> resultMovies) {
-        this.resultMovies = resultMovies;
+    public void setListMovies(List<Movie> listMovies) {
+        this.listMovies = listMovies;
     }
 }
