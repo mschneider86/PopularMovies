@@ -102,7 +102,9 @@ public class NetworkUtils {
 
         shareIntent.setType("text/plain");
 
-        context.startActivity(shareIntent);
+        if (shareIntent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(shareIntent);
+        }
     }
 
     public static void shareMovieLink(Context context, String movieTitle, String movieId){
@@ -112,7 +114,9 @@ public class NetworkUtils {
 
         shareIntent.setType("text/plain");
 
-        context.startActivity(shareIntent);
+        if (shareIntent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(shareIntent);
+        }
     }
 
     public static void playTrailer(Context context, String movieTrailerKey){

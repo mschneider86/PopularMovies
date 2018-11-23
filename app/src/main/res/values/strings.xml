@@ -24,7 +24,8 @@
     <string name="movie_reviews_title">Reviews:</string>
 
 
-    <string name="saved_state_key">movies</string>
+    <string name="saved_state_list_key">movies</string>
+    <string name="saved_state_filter_key">selectedFilter</string>
     <string name="selected_movie_extra_key">selectedMovie</string>
 
 

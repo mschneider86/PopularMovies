@@ -5,7 +5,8 @@
 
         <ImageView
             android:id="@+id/iv_movie_image"
-            style="@style/MoviePoster"/>
+            style="@style/MoviePoster"
+            android:contentDescription="@string/movie_poster_description"/>
 
 
 </android.support.v7.widget.CardView>

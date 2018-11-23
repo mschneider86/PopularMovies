@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private List<Movie> mMovieList;
 
+    private int menuItemIdSelected;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
@@ -76,14 +79,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mRecyclerView.setAdapter(mMovieAdapter);
 
-        //If there's no savedInstance, calls the loadMoviesData method
-        if(savedInstanceState == null || !savedInstanceState.containsKey(getResources().getString(R.string.saved_state_key))){
-            loadMoviesData(NetworkUtils.POPULAR_MOVIES_PATH);
-        }else{
-            //If there is a savedInstance, set the saved list into the adapter
-            mMovieList = savedInstanceState.getParcelableArrayList(getResources().getString(R.string.saved_state_key));
-            mMovieAdapter.setMoviesData(mMovieList);
+        if(savedInstanceState != null){
+            menuItemIdSelected = savedInstanceState.getInt(getResources().getString(R.string.saved_state_filter_key));
+            invalidateOptionsMenu();
         }
+
 
     }
 
@@ -175,8 +175,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList(getResources().getString(R.string.saved_state_key), (ArrayList<? extends Parcelable>) mMovieList);
+        outState.putInt(getResources().getString(R.string.saved_state_filter_key), menuItemIdSelected);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
@@ -190,8 +195,51 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem menuItem;
+
+        if(menuItemIdSelected == R.id.action_sort_by_popular_movies){
+
+            menuItem = menu.findItem(R.id.action_sort_by_popular_movies);
+
+            if (!menuItem.isChecked()){
+                menuItem.setChecked(true);
+            }
+
+            loadMoviesData(NetworkUtils.POPULAR_MOVIES_PATH);
+            return true;
+
+        }else if(menuItemIdSelected == R.id.action_sort_by_top_rated){
+            menuItem = menu.findItem(R.id.action_sort_by_top_rated);
+
+            if (!menuItem.isChecked()) {
+                menuItem.setChecked(true);
+            }
+
+            loadMoviesData(NetworkUtils.TOP_RATED__MOVIES_PATH);
+            return true;
+
+        }else if(menuItemIdSelected == R.id.action_sort_by_favorite){
+            menuItem = menu.findItem(R.id.action_sort_by_favorite);
+
+            if (!menuItem.isChecked()) {
+                menuItem.setChecked(true);
+            }
+
+            loadFavoriteMovies();
+            return true;
+
+        }else{
+            loadMoviesData(NetworkUtils.POPULAR_MOVIES_PATH);
+            return super.onPrepareOptionsMenu(menu);
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
+        menuItemIdSelected = id;
 
         if (id == R.id.action_sort_by_popular_movies) {
             if (!item.isChecked())
